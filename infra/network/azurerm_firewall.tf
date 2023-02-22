@@ -1,26 +1,26 @@
-resource "azurerm_firewall" "canadacentral" {
+resource "azurerm_firewall" "default" {
 	
 	name                = "${local.prefix}-global-canadacentral-fw"
-	location            = "canadacentral"
+	location            = var.location
 	resource_group_name = azurerm_resource_group.global.name
 
 	sku_name = "AZFW_Hub"
 	sku_tier = "Standard"
 
-	firewall_policy_id = azurerm_firewall_policy.canadacentral.id
+	firewall_policy_id = azurerm_firewall_policy.default.id
 }
 
-resource "azurerm_firewall_policy" "canadacentral" {
+resource "azurerm_firewall_policy" "default" {
   name                = "canadacentralFwPolicy"
   resource_group_name = azurerm_resource_group.global.name
-  location            = "canadacentral"
+  location            = azurerm_firewall.default.location
 }
 
 
 
-resource "azurerm_firewall_policy_rule_collection_group" "canadacentral" {
+resource "azurerm_firewall_policy_rule_collection_group" "default" {
 	name               = "canadacentral-fwpolicy-rcg"
-  firewall_policy_id = azurerm_firewall_policy.canadacentral.id
+  firewall_policy_id = azurerm_firewall_policy.default.id
   priority           = 500
 
 	application_rule_collection {
@@ -61,7 +61,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "canadacentral" {
 
 resource "azurerm_firewall_policy_rule_collection_group" "jumpbox" {
 	name               = "jumpbox-fwpolicy-rcg"
-  firewall_policy_id = azurerm_firewall_policy.canadacentral.id
+  firewall_policy_id = azurerm_firewall_policy.default.id
   priority           = 510
 
 	application_rule_collection {
@@ -96,7 +96,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "jumpbox" {
 
 resource "azurerm_firewall_policy_rule_collection_group" "spoke1" {
 	name               = "spoke1-fwpolicy-rcg"
-  firewall_policy_id = azurerm_firewall_policy.canadacentral.id
+  firewall_policy_id = azurerm_firewall_policy.default.id
   priority           = 100
 
 nat_rule_collection {
@@ -107,7 +107,7 @@ nat_rule_collection {
       name                = "ssh"
       protocols           = ["TCP"]
       source_addresses    = ["*"]
-      destination_address = azurerm_firewall.canadacentral.virtual_hub[0].public_ip_addresses[0]
+      destination_address = azurerm_firewall.default.virtual_hub[0].public_ip_addresses[0]
       destination_ports   = ["2022"]
       translated_address  = "10.1.255.4"
       translated_port     = "2022"
@@ -122,7 +122,7 @@ nat_rule_collection {
       name                = "xrdp"
       protocols           = ["TCP"]
       source_addresses    = ["*"]
-      destination_address = azurerm_firewall.canadacentral.virtual_hub[0].public_ip_addresses[0]
+      destination_address = azurerm_firewall.default.virtual_hub[0].public_ip_addresses[0]
       destination_ports   = ["2023"]
       translated_address  = "10.1.255.4"
       translated_port     = "2023"
@@ -181,7 +181,7 @@ nat_rule_collection {
 
 resource "azurerm_firewall_policy_rule_collection_group" "vpn-p2s" {
 	name               = "vpn-p2s-fwpolicy-rcg"
-  firewall_policy_id = azurerm_firewall_policy.canadacentral.id
+  firewall_policy_id = azurerm_firewall_policy.default.id
   priority           = 200
 
 	network_rule_collection {
@@ -192,7 +192,7 @@ resource "azurerm_firewall_policy_rule_collection_group" "vpn-p2s" {
 		rule {
 			name = "all"
 			protocols = ["Any"]
-			source_addresses = azurerm_point_to_site_vpn_gateway.canadacentral.connection_configuration[0].vpn_client_address_pool[0].address_prefixes
+			source_addresses = azurerm_point_to_site_vpn_gateway.default.connection_configuration[0].vpn_client_address_pool[0].address_prefixes
 			destination_ports = ["*"]
 			destination_addresses = ["*"]
 		} 

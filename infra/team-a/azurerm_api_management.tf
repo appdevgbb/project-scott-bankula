@@ -1,7 +1,7 @@
-resource "azurerm_api_management" "default" {
+resource "azurerm_api_management" "team_a" {
   name                = "${local.name}-apim"
-  location            = azurerm_resource_group.default.location
-  resource_group_name = azurerm_resource_group.default.name
+  location            = azurerm_resource_group.team_a.location
+  resource_group_name = azurerm_resource_group.team_a.name
   publisher_name      = var.company_name
   publisher_email     = var.admin_email
 
@@ -20,12 +20,12 @@ resource "azurerm_api_management" "default" {
 
 resource "azurerm_network_security_group" "apim" {
   name = "${local.name}-apim-nsg"
-  location = azurerm_resource_group.default.location
-  resource_group_name = azurerm_resource_group.default.name
+  location = azurerm_resource_group.team_a.location
+  resource_group_name = azurerm_resource_group.team_a.name
 }
 
 resource "azurerm_network_security_rule" "http" {
-  resource_group_name = azurerm_resource_group.default.name
+  resource_group_name = azurerm_resource_group.team_a.name
   network_security_group_name = azurerm_network_security_group.apim.name
 
   name = "allowHttpIn"
@@ -40,7 +40,7 @@ resource "azurerm_network_security_rule" "http" {
 }
 
 resource "azurerm_network_security_rule" "https" {
-  resource_group_name = azurerm_resource_group.default.name
+  resource_group_name = azurerm_resource_group.team_a.name
   network_security_group_name = azurerm_network_security_group.apim.name
 
   name = "allowHttpsIn"
@@ -55,7 +55,7 @@ resource "azurerm_network_security_rule" "https" {
 }
 
 resource "azurerm_network_security_rule" "mgmt" {
-  resource_group_name = azurerm_resource_group.default.name
+  resource_group_name = azurerm_resource_group.team_a.name
   network_security_group_name = azurerm_network_security_group.apim.name
 
   name = "allowApimMgmtIn"
@@ -70,7 +70,7 @@ resource "azurerm_network_security_rule" "mgmt" {
 }
 
 resource "azurerm_network_security_rule" "alb" {
-  resource_group_name = azurerm_resource_group.default.name
+  resource_group_name = azurerm_resource_group.team_a.name
   network_security_group_name = azurerm_network_security_group.apim.name
 
   name = "allowAlbIn"
@@ -85,7 +85,7 @@ resource "azurerm_network_security_rule" "alb" {
 }
 
 resource "azurerm_network_security_rule" "storage" {
-  resource_group_name = azurerm_resource_group.default.name
+  resource_group_name = azurerm_resource_group.team_a.name
   network_security_group_name = azurerm_network_security_group.apim.name
 
   name = "allowStorageOut"
@@ -100,7 +100,7 @@ resource "azurerm_network_security_rule" "storage" {
 }
 
 resource "azurerm_network_security_rule" "sql" {
-  resource_group_name = azurerm_resource_group.default.name
+  resource_group_name = azurerm_resource_group.team_a.name
   network_security_group_name = azurerm_network_security_group.apim.name
 
   name = "allowSqlOut"
@@ -115,7 +115,7 @@ resource "azurerm_network_security_rule" "sql" {
 }
 
 resource "azurerm_network_security_rule" "akv" {
-  resource_group_name = azurerm_resource_group.default.name
+  resource_group_name = azurerm_resource_group.team_a.name
   network_security_group_name = azurerm_network_security_group.apim.name
 
   name = "allowAkvOut"

@@ -5,6 +5,5 @@ module "aks" {
     outbound_type = "userDefinedRouting"
     
     api_server_subnet_id = var.api_server_subnet_id
-    cluster_subnet_id = var.cluster_subnet_id
-
+    worker_subnet_id = var.worker_subnet_id
 }

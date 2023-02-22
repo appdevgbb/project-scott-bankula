@@ -49,6 +49,6 @@ resource "azurerm_kubernetes_cluster" "default" {
     name = "defaultnp01"
     vm_size = "Standard_D4s_v3"
     only_critical_addons_enabled = true
-    vnet_subnet_id = var.cluster_subnet_id
+    vnet_subnet_id = var.worker_subnet_id
   }
 }

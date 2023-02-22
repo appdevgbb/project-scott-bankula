@@ -10,7 +10,7 @@ variable "api_server_subnet_id" {
   type = string
 }
 
-variable "cluster_subnet_id" {
+variable "worker_subnet_id" {
   type = string
 }
 

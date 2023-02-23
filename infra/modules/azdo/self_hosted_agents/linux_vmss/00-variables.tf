@@ -7,11 +7,12 @@ variable "resource_group" {
 
 variable "instances" {
   type = number
+  default = 2
 }
 
 variable "vm_sku" {
   type = string
-  default = "Standard_F2"
+  default = "Standard_FX4mds"
 }
 
 variable "admin_username" {
@@ -28,9 +29,9 @@ variable "azdo_org_name" {
 }
 
 variable "azdo_pat" {
-  
+  type = string
 }
 
 variable "azdo_pool_name" {
-
+  type = string
 }

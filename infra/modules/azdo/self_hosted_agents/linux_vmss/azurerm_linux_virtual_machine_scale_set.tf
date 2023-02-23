@@ -26,7 +26,7 @@ resource "azurerm_linux_virtual_machine_scale_set" "azdo" {
       placement = "CacheDisk"
 
     }
-    disk_size_gb = 30
+    disk_size_gb = 168
   }
 
   network_interface {
@@ -46,5 +46,12 @@ resource "azurerm_linux_virtual_machine_scale_set" "azdo" {
   automatic_os_upgrade_policy {
     disable_automatic_rollback = true
     enable_automatic_os_upgrade = false
+  }
+
+  lifecycle {
+    ignore_changes = [
+      # Ignore instances value after creation as VMSS should auto scale based on demand
+      instances
+    ]
   }
 }
